@@ -61,4 +61,41 @@ contents.each do |row|
   end
 
 end
-  
+
+
+# Assignment 
+
+def clean_phone_number(phone)
+  phone=phone.to_s.gsub(/\W/,"")
+  phone_length=phone.length
+  if phone_length==10 
+    phone
+  elsif (phone_length==11 && phone[0]=='1')
+    phone[1..10]
+  else
+    "bad number"
+  end
+end
+
+
+def most_frequent(data)
+  count = Hash.new(0)
+  data.each {|d| count[d] += 1}
+  count.sort_by { |d,number| number}.last[0]
+end
+
+reg_hour=[] 
+reg_wday=[]
+contents.each do |row|
+  phone = clean_phone_number(row[:homephone])
+  reg_date = row[:regdate]
+  reg_date_format = DateTime.strptime(reg_date,"%m/%d/%y %H:%M")
+  reg_hour.push(reg_date_format.hour)
+  reg_wday.push(reg_date_format.wday)
+  puts phone
+end
+
+num_to_wday = {0=>"Sunday",1=>"Monday",2=>"Tuesday",3=>"Wednesday",4=>"Thursday",5=>"Friday",6=>"Saturday"}
+
+puts ("Hour of the day most people registered - #{most_frequent(reg_hour)}:00")
+puts ("Day of the week most people registered - #{num_to_wday[most_frequent(reg_wday)]}")
